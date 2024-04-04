@@ -1,0 +1,46 @@
+ @keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+ }
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(147, 87, 87);
+    place-items: center; /* 가로 및 세로 방향 가운데 정렬 */
+    height: 80vh; /* 전체 화면 높이 */
+    animation: gradient 10s ease infinite; /*얘 왜 애니메이션 안되냐*/
+    background: linear-gradient(-45deg, green, yellow, orange, rgb(247, 0, 0));
+    background-size:100% 
+  }
+  
+  .square {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: Impact, Charcoal, sans-serif;
+  }
+  
+  .game-over .square {
+    pointer-events: none; /* 게임이 끝나면 클릭 비활성화, 페이지 전환되게 해야되는데.. */
+  }
+
+  .square.clicked {
+    pointer-events: none; /* 클릭된 square에 대해 클릭 비활성화 */
+    background-color: lightgreen; /* 클릭된 square의 배경색 변경 */
+  }
+  
+ 
