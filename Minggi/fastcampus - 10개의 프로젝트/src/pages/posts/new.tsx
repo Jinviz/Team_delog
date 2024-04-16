@@ -1,3 +1,9 @@
-export default function PostNew(){
-    return <h1>Posts New Page</h1>
+import Header from "components/Header";
+
+export default function PostNew() {
+  return (
+    <>
+      <Header />
+    </>
+  );
 }
