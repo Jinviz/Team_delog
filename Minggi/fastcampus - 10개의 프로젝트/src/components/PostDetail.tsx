@@ -3,6 +3,8 @@
 제목, 프로필, 상세 내용, 댓글, 카테고리가 있는 컴포넌트
 
 */
+import { Link } from "react-router-dom";
+
 export default function PostDetail() {
   return (
     <>
@@ -22,7 +24,10 @@ export default function PostDetail() {
             {" "}
             {/* 게시글 수정/삭제 박스 */}
             <div className="post__delete">삭제</div> {/* 게시글 삭제 */}
-            <div className="post__edit">수정</div> {/* 게시글 수정 */}
+            <div className="post__edit">
+              <Link to={`/posts/edit/1`}>수정</Link>
+            </div>{" "}
+            {/* 게시글 수정 */}
           </div>
           <div className="post__text">text testing {/* 게시글의 내용 */}</div>
         </div>
