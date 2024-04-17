@@ -19,7 +19,7 @@ header {
   justify-content: space-between;
   /* flex-direction: row-reverse; */
   border-bottom: 1px solid #f2f2f2;
-  padding: 10px 40px; /* 위아래 10px, 양옆 40px */
+  padding: 10px 40px;
   min-height: 40px;
   align-items: center;
 }
@@ -84,7 +84,7 @@ footer a:hover {
 /* post list, post detail */
 .post__list,
 .post__detail {
-  min-height: 90vh; /* 90프로가 view hieght라는 뜻임 */
+  min-height: 90vh;
   padding: 20px;
   text-align: center;
   max-width: 680px;
