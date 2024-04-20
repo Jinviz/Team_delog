@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "baseUrl": "src", //일반적으론, 프로젝트 루트 디렉토리로 하는데 
+    //src에 소스 코드가 있어 베이스 코드로 적용 시킴
     "target": "es5",
     "lib": [
       "dom",
@@ -22,5 +24,11 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "paths": {
+    "pages/*": ["pages/*"],
+    "components/*": ["components/*"]
+  }
 }
+
+//typescript에서만 사용
