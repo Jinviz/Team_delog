@@ -9,7 +9,7 @@ export default function LoginForm() {
   const [error, setError] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //객체로 원하는 경로 이동하기
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,7 +19,7 @@ export default function LoginForm() {
       await signInWithEmailAndPassword(auth, email, password);
 
       toast.success("로그인에 성공했습니다.");
-      navigate("/");
+      navigate("/"); //Route page로 이동하겠다.
     } catch (error: any) {
       toast.error(error?.code);
       console.log(error);
