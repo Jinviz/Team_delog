@@ -50,9 +50,9 @@ export default function PostList(
                 {/* 게시글의 프로필 박스 */}
                 <div className="post__profile" />{" "}
                 {/* 게시글 등록자의 프로필 사진 공간 */}
-                <div className="post__author-name">채민기</div>{" "}
+                <div className="post__author-name">홍길동</div>{" "}
                 {/* 등록자의 이름 */}
-                <div className="post__date">2024.04.10</div> {/* 등록한 날짜 */}
+                <div className="post__date">2024.12.31</div> {/* 등록한 날짜 */}
               </div>
               <div className="post__title">게시글 {index}</div>{" "}
               {/* 게시글의 제목 */}

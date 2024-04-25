@@ -19,7 +19,7 @@ export default function SignupForm() {
       await createUserWithEmailAndPassword(auth, email, password);
 
       toast.success("회원가입에 성공했습니다.");
-      navigate("/");
+      navigate("/"); // 회원가입을 했을 때 루트 페이지로 이동
     } catch (error: any) {
       console.log(error);
       toast.error(error?.code);

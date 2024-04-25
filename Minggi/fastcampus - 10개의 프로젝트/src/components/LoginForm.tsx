@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { app } from "firebaseAPP";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // navigate는 안내를 해주는 hooks임
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginForm() {
@@ -19,7 +19,7 @@ export default function LoginForm() {
       await signInWithEmailAndPassword(auth, email, password);
 
       toast.success("로그인에 성공했습니다.");
-      navigate("/");
+      navigate("/"); // 로그인 할 때 루트 페이지로 안내
     } catch (error: any) {
       toast.error(error?.code);
       console.log(error);
