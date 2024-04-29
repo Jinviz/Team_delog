@@ -1,4 +1,27 @@
+import { useState } from "react";
+
 export default function PostForm() {
+  const [title, setTitle] = useState<string>("");
+  const [summary, setSummary] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { target: { name, value },
+  } = e;
+
+  if (name === "title") {
+    setTitle(value);
+  }
+
+  if (name === "summary") {
+    setSummary(value);
+  }
+
+  if (name === "content") {
+    setContent(value);
+  }
+  }
+
     return (
       <form action="/post" method="POST" className="form">
         <div className="form__block">

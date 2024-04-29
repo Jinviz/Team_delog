@@ -1,5 +1,6 @@
 import { initializeApp, FirebaseApp, getApp } from "firebase/app";
 import "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 export let app: FirebaseApp; //지역변수로 할당
 
@@ -22,5 +23,6 @@ try {
 
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
 export default firebase;
