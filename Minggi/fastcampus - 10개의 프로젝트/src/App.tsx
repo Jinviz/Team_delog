@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { app, db } from "firebaseAPP";
+import { app} from "firebaseAPP";
 import { getAuth, onAuthStateChanged } from "firebase/auth"; // 현재 firbase의 사용자 로그인 여부 체크
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
