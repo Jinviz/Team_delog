@@ -1,8 +1,9 @@
 import AuthContext from "context/AuthContext";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "firebaseAPP";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface PostListProps {
   hasNavigation?: boolean;
@@ -17,6 +18,8 @@ export interface PostProps {
   summary: string;
   content: string;
   createdAt: string;
+  updatedAt?: string;
+  uid: string;
 }
 
 export default function PostList(
@@ -28,11 +31,23 @@ export default function PostList(
 
   const getPosts = async () => {
     const datas = await getDocs(collection(db, "posts"));
-
+    setPosts([]); // 초기화하는 코드
     datas?.forEach((doc) => {
       const dataObj = { ...doc.data(), id: doc.id };
       setPosts((prev) => [...prev, dataObj as PostProps]);
     });
+  };
+
+  const handleDelete = async (id: string) => {
+    const confirm = window.confirm("해당 게시글을 삭제하시겠습니까?");
+
+    // 확인을 한 경우
+    if (confirm && id) {
+      await deleteDoc(doc(db, "posts", id));
+
+      toast.success("게시글을 삭제했습니다.");
+      getPosts(); // 변경된 post 리스트를 다시 가져옴
+    }
   };
 
   // 페이지가 새로 mount될 때 마다 모든 posts를 friestore를 통해 가져오게 하는 방법
@@ -94,7 +109,14 @@ export default function PostList(
                 <div className="post__utils-box">
                   {" "}
                   {/* 게시글 수정/삭제 박스 */}
-                  <div className="post__delete">삭제</div> {/* 게시글 삭제 */}
+                  <div
+                    className="post__delete"
+                    role="presentation"
+                    onClick={() => handleDelete(post.id as string)}
+                  >
+                    삭제
+                  </div>{" "}
+                  {/* 게시글 삭제 */}
                   <Link to={`/posts/edit/${post?.id}`} className="post__edit">
                     {" "}
                     수정

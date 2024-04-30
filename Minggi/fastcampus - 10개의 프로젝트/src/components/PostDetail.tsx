@@ -3,16 +3,18 @@
 제목, 프로필, 상세 내용, 댓글, 카테고리가 있는 컴포넌트
 
 */
-import { doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "firebaseAPP";
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { PostProps } from "./PostList";
 import Loader from "./Loader";
+import { toast } from "react-toastify";
 
 export default function PostDetail() {
   const [post, setPost] = useState<PostProps | null>(null);
   const params = useParams(); // id 값을 추출해 내는 방법
+  const navigate = useNavigate();
 
   const getPost = async (id: string) => {
     if (id) {
@@ -23,8 +25,15 @@ export default function PostDetail() {
     }
   };
 
-  const handleDelete = () => {
-    console.log("delete!");
+  const handleDelete = async () => {
+    const confirm = window.confirm("해당 게시글을 삭제하시겠습니까?");
+
+    // 확인을 한 경우
+    if (confirm && post && post.id) {
+      await deleteDoc(doc(db, "posts", post.id));
+      toast.success("게시글을 삭제했습니다.");
+      navigate("/");
+    }
   };
 
   useEffect(() => {
@@ -59,7 +68,7 @@ export default function PostDetail() {
               </div>{" "}
               {/* 게시글 삭제 */}
               <div className="post__edit">
-                <Link to={`/posts/edit/1`}>수정</Link>
+                <Link to={`/posts/edit/${post?.id}`}>수정</Link>
               </div>{" "}
               {/* 게시글 수정 */}
             </div>
