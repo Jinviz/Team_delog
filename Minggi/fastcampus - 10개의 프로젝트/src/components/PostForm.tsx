@@ -28,7 +28,11 @@ export default function PostForm() {
           title: title,
           summary: summary,
           content: content,
-          updatedAt: new Date()?.toLocaleDateString(),
+          updatedAt: new Date()?.toLocaleDateString("ko", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }), // 생성 시간
         });
 
         toast?.success("게시글을 생성했습니다.");
@@ -39,7 +43,11 @@ export default function PostForm() {
           title: title,
           summary: summary,
           content: content,
-          createdAt: new Date()?.toLocaleDateString(), // 생성 날짜
+          createdAt: new Date()?.toLocaleDateString("ko", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }), // 생성 시간
           email: user?.email, // 사용자 이메일
           uid: user?.uid, // user의 고유한 id
         });

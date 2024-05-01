@@ -1,5 +1,14 @@
 import AuthContext from "context/AuthContext";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "firebaseAPP";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,6 +16,7 @@ import { toast } from "react-toastify";
 
 interface PostListProps {
   hasNavigation?: boolean;
+  defaultTab?: TabType;
 }
 
 type TabType = "all" | "my";
@@ -22,16 +32,36 @@ export interface PostProps {
   uid: string;
 }
 
-export default function PostList(
-  { hasNavigation = true } /* profile 페이지에서 보이면 안돼서 추가 */
-) {
+export default function PostList({
+  hasNavigation = true /* profile 페이지에서 보이면 안돼서 추가 */,
+  defaultTab = "all",
+}: PostListProps) {
   const [activeTab, setActiveTab] = useState<TabType>("all");
   const [posts, setPosts] = useState<PostProps[]>([]); // 화면에 posts를 렌더링
   const { user } = useContext(AuthContext);
 
   const getPosts = async () => {
-    const datas = await getDocs(collection(db, "posts"));
-    setPosts([]); // 초기화하는 코드
+    // 기존에 있는 postlist에 새로 업데이트된 postlist가 합쳐지는 것을 방지하기 위한 초기화하는 코드
+    setPosts([]);
+    // 쿼리문을 통해 게시글 순서(시간 기준)를 관리하는 코드
+    let postsRef = collection(db, "posts");
+    let postsQuery;
+
+    if (activeTab == "my" && user) {
+      // 나의 글만 필터링
+      // 복합 쿼리를 사용하면, Firebase에서 카테고리 index를 추가 해줘야한다.
+      postsQuery = query(
+        postsRef,
+        where("uid", "==", user.uid),
+        orderBy("createdAt", "asc")
+      );
+    } else {
+      // 모든 글 보여주기
+      postsQuery = query(postsRef, orderBy("createdAt", "asc"));
+    }
+
+    const datas = await getDocs(postsQuery);
+
     datas?.forEach((doc) => {
       const dataObj = { ...doc.data(), id: doc.id };
       setPosts((prev) => [...prev, dataObj as PostProps]);
@@ -53,7 +83,7 @@ export default function PostList(
   // 페이지가 새로 mount될 때 마다 모든 posts를 friestore를 통해 가져오게 하는 방법
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [activeTab]); // Tab이 변할 때 마다 getPosts가 호출된다.
 
   return (
     <>
