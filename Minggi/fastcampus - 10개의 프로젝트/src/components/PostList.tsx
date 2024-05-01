@@ -16,11 +16,8 @@ import { toast } from "react-toastify";
 
 interface PostListProps {
   hasNavigation?: boolean;
-  defaultTab?: TabType;
+  defaultTab?: TabType | CategoryType;
 }
-
-type TabType = "all" | "my";
-
 export interface PostProps {
   id?: string; // ?를 붙인 이유는 PostDetail에서 id: docSnap.id의 type error를 방지하기 위함
   title: string;
@@ -30,13 +27,26 @@ export interface PostProps {
   createdAt: string;
   updatedAt?: string;
   uid: string;
+  category?: CategoryType;
 }
+type TabType = "all" | "my";
+
+export type CategoryType = "Frontend" | "Backend" | "Web" | "Native";
+export const CATEGORIES: CategoryType[] = [
+  // export를 하는 이유는 다른 페이지에서도 해당 변수들을 사용하기 위해
+  "Frontend",
+  "Backend",
+  "Web",
+  "Native",
+];
 
 export default function PostList({
   hasNavigation = true /* profile 페이지에서 보이면 안돼서 추가 */,
   defaultTab = "all",
 }: PostListProps) {
-  const [activeTab, setActiveTab] = useState<TabType>("all");
+  const [activeTab, setActiveTab] = useState<TabType | CategoryType>(
+    defaultTab
+  );
   const [posts, setPosts] = useState<PostProps[]>([]); // 화면에 posts를 렌더링
   const { user } = useContext(AuthContext);
 
@@ -55,9 +65,16 @@ export default function PostList({
         where("uid", "==", user.uid),
         orderBy("createdAt", "asc")
       );
-    } else {
+    } else if (activeTab === "all") {
       // 모든 글 보여주기
       postsQuery = query(postsRef, orderBy("createdAt", "asc"));
+    } else {
+      // 카테고리 글 보여주기
+      postsQuery = query(
+        postsRef,
+        where("uid", "==", activeTab),
+        orderBy("createdAt", "asc")
+      );
     }
 
     const datas = await getDocs(postsQuery);
@@ -105,6 +122,18 @@ export default function PostList({
           >
             나의 글
           </div>
+          {CATEGORIES?.map((category) => (
+            <div
+              key={category}
+              role="presentation"
+              onClick={() => setActiveTab(category)}
+              className={
+                activeTab === category ? "post__navigation--active" : ""
+              }
+            >
+              {category}
+            </div>
+          ))}
         </div>
       )}
 

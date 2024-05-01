@@ -57,7 +57,9 @@ export default function PostDetail() {
               {/* 등록한 날짜 */}
             </div>
             <div className="post__utils-box">
-              {" "}
+              {post?.category && ( // 카테고리가 존재하는 경우에만 출력
+                <div className="post__category">{post?.category}</div>
+              )}
               {/* 게시글 수정/삭제 박스 */}
               <div
                 className="post__delete"
