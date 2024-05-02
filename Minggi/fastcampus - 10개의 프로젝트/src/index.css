@@ -64,6 +64,12 @@ footer a:hover {
   color: black;
 }
 
+.fotter__theme-btn {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
 /* post navigation */
 .post__navigation {
   display: flex;
@@ -493,4 +499,48 @@ input:checked + .carousel__slide-container .nav label {
   border: 5px solid blue;
   border-radius: 50%;
   z-index: 9999;
+}
+
+/* dark mode */
+/* 트랜지션은 웹 속성 변화를 부드럽게 해주는 것*/
+.white {
+  transition: all 0.25s linear;
+  background-color: white;
+}
+
+.dark {
+  transition: all 0.25s linear;
+  background-color: #1e2937;
+  min-height: 100vh;
+}
+
+.dark a,
+.dark .form label,
+.dark .post__delete,
+.dark .profile__logout,
+.dark .form__title,
+.dark .post__navigation--active,
+.dark .post__author-name,
+.dark .fotter__theme-btn,
+.dark .profile__name {
+  color: white;
+}
+
+.dark a:hover,
+.dark a:focus,
+.dark .post__text,
+.dark .post__text--pre-wrap,
+.dark .profile__email,
+.dark .post__date,
+.dark .form__block {
+  color: lightgray;
+}
+
+.dark .form__error {
+  color: #ff6a71;
+}
+
+.dark footer,
+.dark header {
+  background-color: #111827;
 }
