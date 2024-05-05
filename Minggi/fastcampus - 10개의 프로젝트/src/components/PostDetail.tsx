@@ -46,41 +46,41 @@ export default function PostDetail() {
       <div className="post__detail">
         {post ? (
           <>
-          <div className="post__box">
-            <div className="post__title">{post?.title}</div>
-            <div className="post__profile-box">
-              {" "}
-              {/* 게시글의 프로필 박스 */}
-              <div className="post__profile" />{" "}
-              {/* 게시글 등록자의 프로필 사진 공간 */}
-              <div className="post__author-name">{post?.email}</div>{" "}
-              {/* 등록자의 이름 */}
-              <div className="post__date">{post?.createdAt}</div>{" "}
-              {/* 등록한 날짜 */}
+            <div className="post__box">
+              <div className="post__title">{post?.title}</div>
+              <div className="post__profile-box">
+                {" "}
+                {/* 게시글의 프로필 박스 */}
+                <div className="post__profile" />{" "}
+                {/* 게시글 등록자의 프로필 사진 공간 */}
+                <div className="post__author-name">{post?.email}</div>{" "}
+                {/* 등록자의 이름 */}
+                <div className="post__date">{post?.createdAt}</div>{" "}
+                {/* 등록한 날짜 */}
+              </div>
+              <div className="post__utils-box">
+                {post?.category && ( // 카테고리가 존재하는 경우에만 출력
+                  <div className="post__category">{post?.category}</div>
+                )}
+                {/* 게시글 수정/삭제 박스 */}
+                <div
+                  className="post__delete"
+                  role="presentation"
+                  onClick={handleDelete}
+                >
+                  삭제
+                </div>{" "}
+                {/* 게시글 삭제 */}
+                <div className="post__edit">
+                  <Link to={`/posts/edit/${post?.id}`}>수정</Link>
+                </div>{" "}
+                {/* 게시글 수정 */}
+              </div>
+              <div className="post__text post__text--pre-wrap">
+                {post?.content} {/* 게시글의 내용 */}
+              </div>
             </div>
-            <div className="post__utils-box">
-              {post?.category && ( // 카테고리가 존재하는 경우에만 출력
-                <div className="post__category">{post?.category}</div>
-              )}
-              {/* 게시글 수정/삭제 박스 */}
-              <div
-                className="post__delete"
-                role="presentation"
-                onClick={handleDelete}
-              >
-                삭제
-              </div>{" "}
-              {/* 게시글 삭제 */}
-              <div className="post__edit">
-                <Link to={`/posts/edit/${post?.id}`}>수정</Link>
-              </div>{" "}
-              {/* 게시글 수정 */}
-            </div>
-            <div className="post__text post__text--pre-wrap">
-              {post?.content} {/* 게시글의 내용 */}
-            </div>
-          </div>
-          <Comments/>
+            <Comments post={post} />
           </>
         ) : (
           <Loader />
