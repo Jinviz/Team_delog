@@ -1,28 +1,21 @@
 import React, { useContext, useState } from "react";
-import { PostProps } from "./PostList";
+import { CommentsInterface, PostProps } from "./PostList";
 /* 
 updateDoc은 문서 업데이트 (전체 문서를 덮어쓰지 않고 문서의 일부 필드를 업데이트 한다.)
 arrayUnion은 배열 요소 업데이트 (문서에 배열 필드가 포함되어있으면 배열에 없는 요소를 추가한다.)
+arrayRemove는 배열 요소 업데이트 (제공된 각 요소의 모든 인스턴스를 삭제한다.)
 */
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { db } from "firebaseAPP";
 import AuthContext from "context/AuthContext";
 import { toast } from "react-toastify";
 
-const COMMENTS = [
-  {
-    id: 1,
-    email: "test@test.com",
-    content: "댓글",
-    createdAt: "209302",
-  },
-];
-
 interface CommentsProps {
   post: PostProps;
+  getPost: (id: string) => Promise<void>;
 }
 
-export default function Comments({ post }: CommentsProps) {
+export default function Comments({ post, getPost }: CommentsProps) {
   const [comment, setComment] = useState("");
   const { user } = useContext(AuthContext);
 
@@ -63,12 +56,29 @@ export default function Comments({ post }: CommentsProps) {
               second: "2-digit",
             }),
           });
+          // 문서 업데이트
+          await getPost(post.id);
         }
       }
       toast.success("댓글을 생성했습니다.");
       setComment("");
     } catch (e: any) {
       toast.error(e?.code);
+    }
+  };
+
+  const handleDeleteComment = async (data: CommentsInterface) => {
+    const confirm = window.confirm("해당 댓글을 삭제하시겠습니까?");
+    if (confirm && post.id) {
+      const postRef = doc(db, "posts", post.id);
+      // 기존 게시글에서 내가 원하는 댓글만 삭제하는 방식
+      await updateDoc(postRef, {
+        comments: arrayRemove(data),
+      });
+
+      toast.success("댓글을 삭제했습니다.");
+      // 댓글 삭제 후 문서 업데이트
+      await getPost(post.id);
     }
   };
 
@@ -90,16 +100,28 @@ export default function Comments({ post }: CommentsProps) {
         </div>
       </form>
       <div className="comments__list">
-        {COMMENTS?.map((comment) => (
-          <div key={comment.id} className="comment__box">
-            <div className="comment__profile-box">
-              <div className="comment__email">{comment?.email}</div>
-              <div className="comment__date">{comment?.createdAt}</div>
-              <div className="comment__delete">삭제</div>
+        {/* 매핑 순서 변경 (최신 댓글이 가장 위로 올라오게 설정하는 방법) */}
+        {post?.comments
+          ?.slice(0)
+          ?.reverse()
+          .map((comment) => (
+            <div key={comment.createdAt} className="comment__box">
+              <div className="comment__profile-box">
+                <div className="comment__email">{comment?.email}</div>
+                <div className="comment__date">{comment?.createdAt}</div>
+                {/* 삭제 버튼이 comment uid와 사용자 uid가 일치할 시 보이게 하는 설정 */}
+                {comment.uid === user?.uid && (
+                  <div
+                    className="comment__delete"
+                    onClick={() => handleDeleteComment(comment)}
+                  >
+                    삭제
+                  </div>
+                )}
+              </div>
+              <div className="comment__text">{comment.content}</div>
             </div>
-            <div className="comment__text">{comment.content}</div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );

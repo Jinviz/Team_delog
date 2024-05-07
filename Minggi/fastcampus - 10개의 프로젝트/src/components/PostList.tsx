@@ -1,4 +1,4 @@
-  import AuthContext from "context/AuthContext";
+import AuthContext from "context/AuthContext";
 import {
   collection,
   deleteDoc,
@@ -18,6 +18,14 @@ interface PostListProps {
   hasNavigation?: boolean;
   defaultTab?: TabType | CategoryType;
 }
+
+export interface CommentsInterface {
+  content: string;
+  uid: string;
+  email: string;
+  createdAt: string;
+}
+
 export interface PostProps {
   id?: string; // ?를 붙인 이유는 PostDetail에서 id: docSnap.id의 type error를 방지하기 위함
   title: string;
@@ -28,6 +36,7 @@ export interface PostProps {
   updatedAt?: string;
   uid: string;
   category?: CategoryType;
+  comments?: CommentsInterface[];
 }
 type TabType = "all" | "my";
 

@@ -80,7 +80,7 @@ export default function PostDetail() {
                 {post?.content} {/* 게시글의 내용 */}
               </div>
             </div>
-            <Comments post={post} />
+            <Comments post={post} getPost={getPost} />
           </>
         ) : (
           <Loader />
