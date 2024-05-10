@@ -1,13 +1,14 @@
-$background-color: #1e203b;
+$background: #1e293b;
 $activeBg: #3c495f5f;
 $white: #ffffff;
 $border: #708090;
-$promaryColor: #60a5fa;
+$primaryColor: #60a5fa;
 $activeBorder: #3b82f6;
 $grayText: #9ca3af;
 $danger: #dc2626;
-$danger: #dc26268e;
+$dangerDark: #dc26268e;
 $gray: #6b7280;
+$grayDark: #4c515b;
 
 $font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
@@ -15,13 +16,13 @@ $font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
 // 전체 레이아웃
 body {
   margin: 0;
-  font-family: font;
+  font-family: $font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  background-color: $background-color;
+  background-color: $background;
   color: $white;
 }
 
@@ -45,6 +46,38 @@ body {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
+// footer
+.footer {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: transparent;
+  color: $white;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    background-color: transparent;
+
+    button {
+      border: none;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+      font-size: 15px;
+      background-color: transparent;
+      padding: 16px 0px;
+      backdrop-filter: blur(10px);
+    }
+  }
+}
+
 // home 레이아웃
 .home {
   // &은 SCSS에서 배운 상속하기 위함. 위에 있는 home 부분을 앞부분에 사용한다. (home__title)
@@ -53,6 +86,7 @@ body {
     font-weight: 700;
     font-size: 20px;
   }
+
   &__tabs {
     width: 100%;
     // grid-template-columns는 컨테이너의 열을 정의
@@ -80,8 +114,8 @@ body {
   }
 }
 
-.post-from {
-  &__text {
+.post-form {
+  &__textarea {
     font-family: $font;
     min-height: 120px;
     display: block;
@@ -94,16 +128,17 @@ body {
     outline: none;
     font-size: 20px;
     border-bottom: 1px solid $border;
-  }
-  &::placeholder {
-    font-family: $font;
-    color: $grayText;
-    font-size: 20px;
+
+    &::placeholder {
+      font-family: $font;
+      color: $grayText;
+      font-size: 20px;
+    }
   }
 
   &__submit-area {
     display: flex;
-    padding: 0.75rem, 1rem;
+    padding: 0.75rem 1rem;
     justify-content: space-between;
     border-bottom: 1px solid $border;
 
@@ -113,14 +148,6 @@ body {
       flex-direction: column;
       justify-content: center;
       cursor: pointer;
-
-      // .post-from__file-icon {
-      //   color: $activeBorder;
-
-      //   &:hover {
-      //     color: $promaryColor;
-      //   }
-      // }
     }
 
     .hidden {
@@ -133,6 +160,96 @@ body {
     @extend .button;
     // rem은 요소의 패딩을 최상위 요소 글꼴 크기의 n배로 설정하는 뜻
     padding: 0.5rem 1rem;
-    background-color: $promaryColor;
+    background-color: $primaryColor;
+  }
+}
+
+// Post 레이아웃
+.post {
+  padding-bottom: 40px;
+
+  &__flex {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__email,
+  &__createdAt {
+    font-size: 12px;
+    color: $grayText;
+  }
+
+  &__box {
+    padding: 10px 0px;
+    border-bottom: 1px solid $border;
+
+    a {
+      text-decoration: none;
+    }
+
+    &-profile {
+      text-decoration: none;
+      padding: 0px 10px;
+
+      &-img,
+      &-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+    }
+
+    &-content {
+      display: block;
+      font-weight: 500;
+      padding: 16px 4px;
+    }
+
+    &-footer {
+      padding: 0 16px;
+      margin-top: 10px;
+      font-size: 14px;
+      display: flex;
+      gap: 8px;
+      flex-direction: row-reverse;
+
+      button {
+        @extend .button;
+
+        &.post__delete {
+          background-color: $danger;
+
+          &:hover,
+          &:focus {
+            background-color: $dangerDark;
+          }
+        }
+
+        &.post__edit {
+          background-color: $gray;
+
+          a {
+            background-color: transparent;
+          }
+
+          &:hover,
+          &:focus {
+            background-color: $grayDark;
+          }
+        }
+
+        &.post__likes,
+        &.post__comments {
+          @extend .post__flex;
+
+          &:hover,
+          &:focus {
+            color: $gray;
+          }
+        }
+      }
+    }
   }
 }
