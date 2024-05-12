@@ -1,15 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-
 import PostForm from "components/posts/PostForm";
 import PostBox from "components/posts/PostBox";
 
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-  orderBy,
-} from "firebase/firestore";
+import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import AuthContext from "components/context/AuthContext";
 import { db } from "firebaseApp";
 
@@ -23,19 +16,18 @@ export interface PostProps {
   likes?: string[];
   likeCount?: number;
   comments?: any;
+  hashTags?: string[];
 }
 
 export default function HomePage() {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const { user } = useContext(AuthContext);
-
   useEffect(() => {
     if (user) {
-      let postsRef = collection(db, "posts");
-      let postsQuery = query(postsRef, orderBy("createdAt", "desc"));
-
+      const postsRef = collection(db, "posts");
+      const postsQuery = query(postsRef, orderBy("createdAt", "desc"));
       onSnapshot(postsQuery, (snapShot) => {
-        let dataObj = snapShot.docs.map((doc) => ({
+        const dataObj = snapShot.docs.map((doc) => ({
           ...doc.data(),
           id: doc?.id,
         }));
@@ -43,7 +35,6 @@ export default function HomePage() {
       });
     }
   }, [user]);
-
   return (
     <div className="home">
       <div className="home__top">
@@ -53,7 +44,6 @@ export default function HomePage() {
           <div className="home__tab">Following</div>
         </div>
       </div>
-
       <PostForm />
       <div className="post">
         {posts?.length > 0 ? (
