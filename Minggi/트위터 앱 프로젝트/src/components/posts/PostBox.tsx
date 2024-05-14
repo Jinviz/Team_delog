@@ -7,7 +7,11 @@ import { AiFillHeart } from "react-icons/ai";
 import { FaRegComment, FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
+import { getStorage, ref, deleteObject } from "firebase/storage";
+import { storage } from "firebaseApp";
+
 import { toast } from "react-toastify";
+import { error } from "console";
 interface PostBoxProps {
   post: PostProps;
 }
@@ -15,10 +19,19 @@ interface PostBoxProps {
 export default function PostBox({ post }: PostBoxProps) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const imageRef = ref(storage, post?.imageUrl);
 
   const handleDelete = async () => {
     const confirm = window.confirm("해당 게시글을 삭제하시겠습니까?");
     if (confirm) {
+      // 스토리지 이미지 먼저 삭제
+
+      if (post?.imageUrl) {
+        deleteObject(imageRef).catch((error) => {
+          console.log(error);
+        });
+      }
+
       await deleteDoc(doc(db, "posts", post.id));
       toast.success("게시글을 삭제했습니다.");
       navigate("/");
