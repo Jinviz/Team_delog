@@ -11,7 +11,7 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
 export default function PostForm() {
   const [content, setContent] = useState<string>("");
   const [hashTag, setHashTag] = useState<string>("");
-  const [imageFile, setImagetFile] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
   const { user } = useContext(AuthContext);
@@ -27,7 +27,7 @@ export default function PostForm() {
 
     fileReader.onloadend = (e: any) => {
       const { result } = e?.currentTarget;
-      setImagetFile(result);
+      setImageFile(result);
     };
   };
 
@@ -62,7 +62,7 @@ export default function PostForm() {
       setHashTag("");
       setContent("");
       toast.success("게시글을 생성했습니다.");
-      setImagetFile(null);
+      setImageFile(null);
       setIsSubmitting(false);
     } catch (e: any) {
       console.log(e);
@@ -101,7 +101,7 @@ export default function PostForm() {
   };
 
   const handleDeleteImage = () => {
-    setImagetFile(null);
+    setImageFile(null);
   };
 
   return (

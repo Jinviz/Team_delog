@@ -20,7 +20,7 @@ export default function PostEditForm() {
   const params = useParams();
   const [post, setPost] = useState<PostProps | null>(null);
   const [hashTag, setHashTag] = useState<string>("");
-  const [imageFile, setImagetFile] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
   const [content, setContent] = useState<string>("");
@@ -38,7 +38,7 @@ export default function PostEditForm() {
 
     fileReader.onloadend = (e: any) => {
       const { result } = e?.currentTarget;
-      setImagetFile(result);
+      setImageFile(result);
     };
   };
 
@@ -49,7 +49,7 @@ export default function PostEditForm() {
       setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id });
       setContent(docSnap?.data()?.content);
       setTags(docSnap?.data()?.hashTags);
-      setImagetFile(docSnap?.data()?.imageUrl);
+      setImageFile(docSnap?.data()?.imageUrl);
     }
   }, [params.id]);
 
@@ -62,7 +62,7 @@ export default function PostEditForm() {
       if (post) {
         // 기존 사진을 지우고 새로운 사진을 업로드
         if (post?.imageUrl) {
-          let imageRef = ref(storage, post?.imageUrl);
+          const imageRef = ref(storage, post?.imageUrl);
           await deleteObject(imageRef).catch((error) => {
             console.log(error);
           });
@@ -85,7 +85,7 @@ export default function PostEditForm() {
         navigate(`/posts/${post?.id}`);
         toast.success("게시글을 수정했습니다.");
       }
-      setImagetFile(null);
+      setImageFile(null);
       setIsSubmitting(false);
     } catch (e: any) {
       console.log(e);
@@ -124,7 +124,7 @@ export default function PostEditForm() {
   };
 
   const handleDeleteImage = () => {
-    setImagetFile(null);
+    setImageFile(null);
   };
 
   useEffect(() => {

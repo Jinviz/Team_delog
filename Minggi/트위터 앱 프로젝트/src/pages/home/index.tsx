@@ -23,6 +23,7 @@ export interface PostProps {
 export default function HomePage() {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const { user } = useContext(AuthContext);
+
   useEffect(() => {
     if (user) {
       const postsRef = collection(db, "posts");
@@ -36,6 +37,7 @@ export default function HomePage() {
       });
     }
   }, [user]);
+
   return (
     <div className="home">
       <div className="home__top">
